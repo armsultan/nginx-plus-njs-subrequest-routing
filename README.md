@@ -1,17 +1,17 @@
-# NJS sub request for routing decision
+# NJS sub-request for routing decision
 
-A NGINX Plus Docker demo for Demonstrating NJS sub request for Routing Decision
+An NGINX Plus Docker demo for Demonstrating NJS sub-request for Routing Decision
 
 ## Mock Scenario
 
-Connected cars are routed to the appropriate API service based on their unique Identifer
+Connected cars are routed to the appropriate API service based on their unique identifier
 
 ## How it Works
 
 ![vin router](vin-router.png)
 
-We are using a mock routing service that has the routing response hard coded. To
-change the routing reponse we will need to change the associated config
+We are using a mock routing service that has the routing response hardcoded. To
+change the routing response, and we will need to change the associated config
 
 There are also Mock services `Production`, `ENTERTAINMENT` and `X`, NGINX routes
 to
@@ -22,17 +22,17 @@ to
    1.  Check that the `CN` exists. If the `CN` is blank, NGINX responds with a
        `HTTP 400` error back to the client. 
    2. If `CN` value exists, NGINX will extract that value from the
-      `CCRT-Subject` header and save it as the `$ccrtSubject_vin` NGINX varible
+      `CCRT-Subject` header and save it as the `$ccrtSubject_vin` NGINX variable
 3. NGINX then make a sub-request using NGINX NJS to the routing service with
    that `CN` value (`$ccrtSubject_vin`) in the `X-Cert-Name` header i.e
    `X-Cert-Name: $ccrtSubject_vin`
-4. The Routing Service reponds with a JSON response, in this payload includes
+4. The Routing Service responds with a JSON response, in this payload includes
    the "`environment`" value: `Prod`, `ENTERTAINMENT` , `X` or something else.
 5.  NGINX NJS parses the JSON body from the Routing Service, extracts the
-    `environment` value and sets the `$env` NGINX variable , e.g. `Production`
+    `environment` value and sets the `$env` NGINX variable, e.g. `Production`
 6.  NGINX maps the value of `$env` (`Production`) to the known upstream named
     `Prod`
-7. Client gets response from the routed service
+7. Client gets the response from the routed service
 
 ## File Structure
 
@@ -109,13 +109,13 @@ etc/
 
 ## Demo Time!
 
-Lets route requests to our mock services!
+Let's route requests to our mock services!
 
 `docker exec` into the NGINX Plus container to run these demo commands
 
 ### Error Checking
 
-1. If the `CN` vakue in the `CCRT-Subject` Header is blank we will deny the
+1. If the `CN` value in the `CCRT-Subject` Header is blank, we will deny the
    request:
 
 ```bash
@@ -133,7 +133,7 @@ curl http://api.example.com/web-services/user-data/1.1/service \
 ```
 
 
-#### Route to Production Service
+### Route to Production Service
 
 1. Set routing response to "production"
 
@@ -160,7 +160,7 @@ curl  http://api.example.com/web-services/user-data/1.1/service \
 }
 ```
 
-#### Route to Entertainment Service
+### Route to Entertainment Service
 
 
 1. Set routing response to "ENTERTAINMENT"
@@ -188,7 +188,7 @@ curl  http://api.example.com/web-services/user-data/1.1/service \
 }
 ```
 
-#### Route to X Service
+### Route to X Service
 
 1. Set routing response to "X"
 
