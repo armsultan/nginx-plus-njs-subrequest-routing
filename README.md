@@ -34,6 +34,19 @@ to
     `Prod`
 7. Client gets the response from the routed service
 
+### Commentary on NGINX Config
+
+The NGINX Config uses a combination of
+[auth_request](http://nginx.org/en/docs/http/ngx_http_auth_request_module.html)
+and [NJS](https://nginx.org/en/docs/njs/) to execute a subrequest before a
+request is passed to the backend
+
+There is a workaround `location`, `/get_env_trampoline` to get around an NGINX
+limitation (`Dec 2020`) which disallows to create a subrequest from a subrequest
+(`auth_request` is a subrequest, and the subrequest in [`js_content`](http://nginx.org/en/docs/http/ngx_http_js_module.html#js_content) will fail),
+instead we do a `proxy_pass` connection back to auxillary server
+
+
 ## File Structure
 
 ```
